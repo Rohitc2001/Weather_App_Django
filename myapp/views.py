@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 import urllib.request
 import json
@@ -6,15 +7,22 @@ import math
 
 # Create your views here.
 
+
+def error_404(request, exception):
+    return render(request, "404.html", {})
+
+def error_500(request, exception=None):
+    return render(request, "500.html", {})
+
+
 def home(request):
     
     if request.method == 'POST':
+        
         city = request.POST['city']
-
         
         data_source_url = urllib.request.urlopen('http://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=63663f503c6adbbe0b8eb22748835e00').read()
-        
-
+       
         json_data = json.loads(data_source_url)
 
         weather = {
@@ -29,9 +37,8 @@ def home(request):
         
     else:
         weather={}   
-
-    
-     
         
     return render(request,'home.html',weather)
+
+
 
